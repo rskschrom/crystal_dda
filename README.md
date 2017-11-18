@@ -2,7 +2,13 @@
 Modules and script for generating branched planar crystal polygons and input text files for DDA code
 
 # Installation
-Download all python files to a a local machine. Nicer Python package installation to come (maybe). Need Numpy and Matplotlib to run these files.
+Clone package to local machine. Then cd into directory and install with:
+
+```
+python setup.py install --user
+```
+
+Numpy and Matplotlib are required dependencies.
 
 # Usage
 Set the variables in ``make_crystal_dda.py`` appropriately and then run with:
