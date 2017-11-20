@@ -28,31 +28,31 @@ def in_polygon(xpoly, ypoly, xpoints, ypoints):
     return indicator
 
 # create branched planar crystal
-def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb):
+def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb, numxp):
     # test points
-    numxp = 300
-    numyp = 300
-    x2d, y2d = np.meshgrid(np.linspace(-amax, amax, numxp),
-                           np.linspace(-amax, amax, numyp), indexing='ij')
+    numyp = numxp
+    x2d, y2d = np.meshgrid(np.linspace(-a, a, numxp),
+                           np.linspace(-a, a, numyp), indexing='ij')
     xp = x2d.flatten()
     yp = y2d.flatten()
 
-    # make crystal and subset to specific size a
-    x, y = make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
-    inbranched = in_polygon(x, y, xp, yp)
-    xp_br = xp[inbranched]
-    yp_br = yp[inbranched]
-
+    # make hexagon first
     xhex, yhex = make_hexagon(a)
-    inhex = in_polygon(xhex, yhex, xp_br, yp_br)
-    xp_sub = xp_br[inhex]
-    yp_sub = yp_br[inhex]
+    inhex = in_polygon(xhex, yhex, xp, yp)
+    xp_hex = xp[inhex]
+    yp_hex = yp[inhex]
+
+    # determine which hexagon points are in branched planar
+    xbr, ybr = make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
+    inbranched = in_polygon(xbr, ybr, xp_hex, yp_hex)
+    xp_br = xp_hex[inbranched]
+    yp_br = yp_hex[inbranched]
 
     # rescale to dda domain
-    dx = 2.*amax/(numxp-1)
-    dy = 2.*amax/(numyp-1)
-    xp_dda = (xp_br+amax)/dx
-    yp_dda = (yp_br+amax)/dy
+    dx = 2.*a/(numxp-1)
+    dy = 2.*a/(numyp-1)
+    xp_dda = (xp_br+a)/dx
+    yp_dda = (yp_br+a)/dy
 
     # set aspect ratio and thickness
     delta_x = np.max(xp_dda)-np.min(xp_dda)
