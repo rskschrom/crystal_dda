@@ -34,7 +34,7 @@ nsb = 5
 asp = 20.
 ag = amax*fg
 ```
-Finaly, we create the DDA input file with:
+Finally, we create the DDA input file with:
 
 ```
 fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb)
