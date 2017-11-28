@@ -3,16 +3,18 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import crystal_dda.polygons as poly
-from geom.crystal_dda import rotate, in_polygon
+import crystal_dda.geometry as geom
 from matplotlib import path
 import os
 
 # set branched planar crystal properties
 amax = 3.
-ac = 0.5
-fg = 0.7
-ft = 0.2
-fb = 0.4
+ac = 0.05
+
+fb = 0.6
+ft = 0.4
+fg = 0.3
+
 nsb = 11
 
 ag = fg*amax
@@ -42,18 +44,18 @@ ybound = np.array([np.sqrt(3.)*amax/2., np.sqrt(3.)*amax/2., np.sqrt(3.)*ag/2.,
                    np.sqrt(3.)*amax/2., np.sqrt(3.)*amax/2.])
 
 # rotations for bounding star shape
-xboundr, yboundr = rotate(xbound, ybound, -60.)
+xboundr, yboundr = geom.rotate(xbound, ybound, -60.)
 xbound = np.concatenate((xbound, xboundr[1:]))
 ybound = np.concatenate((ybound, yboundr[1:]))
 
 for i in range(4):
-    xboundr, yboundr = rotate(xboundr, yboundr, -60.)
+    xboundr, yboundr = geom.rotate(xboundr, yboundr, -60.)
     xbound = np.concatenate((xbound, xboundr[1:]))
     ybound = np.concatenate((ybound, yboundr[1:]))
 
 # create branched planar crystal
 x, y = poly.make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
-inbranched = in_polygon(x, y, xp, yp)
+inbranched = geom.in_polygon(x, y, xp, yp)
 xp_br = xp[inbranched]
 yp_br = yp[inbranched]
 
@@ -65,7 +67,7 @@ for a in avals:
     # subset full-size crystal to a size
     print a
     xhex, yhex = poly.make_hexagon(a)
-    inhex = in_polygon(xhex, yhex, xp_br, yp_br)
+    inhex = geom.in_polygon(xhex, yhex, xp_br, yp_br)
     xp_sub = xp_br[inhex]
     yp_sub = yp_br[inhex]
 

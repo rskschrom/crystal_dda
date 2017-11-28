@@ -13,11 +13,11 @@ from crystal_dda.geometry import afrac_dda_subregion
 
 # set values to create branched planar crystal with
 amax = 3.
-ac = 0.5
+ac = 0.05
 
-fb = 0.4
-ft = 0.2
-fg = 0.7
+fb = 0.6
+ft = 0.4
+fg = 0.3
 
 nsb = 11
 asp = 20.
@@ -32,7 +32,7 @@ fmb = wmb/(ac/2.)
 
 # loop over a axis lengths for given crystal
 numa = 21
-avals = np.linspace(0.1, amax, numa)
+avals = np.linspace(ac, amax, numa)
 afrac_anl_vals = np.empty(numa)
 afrac_dda_vals = np.empty(numa)
 xdda, ydda = make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
