@@ -7,7 +7,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-from crystal_dda import branched_planar_dda
+from crystal_dda.crystal_dda import branched_planar_dda
 
 # set values to create branched planar crystal with
 a = 0.2
@@ -26,7 +26,7 @@ ag = amax*fg
 fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb)
 print fname, afrac
 
-# plot dipole locations
+# plot dipole locations from text file
 dda_data = np.genfromtxt(fname, skip_header=3)
 x3d = dda_data[:,0]
 y3d = dda_data[:,1]
