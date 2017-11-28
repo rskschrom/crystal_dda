@@ -1,5 +1,5 @@
 # crystal_dda
-Modules and script for generating branched planar crystal polygons and input text files for DDA code
+A package for generating branched planar crystal polygons and input text files for DDA code
 
 # Installation
 Clone package to local machine. Then cd into directory and install with:
