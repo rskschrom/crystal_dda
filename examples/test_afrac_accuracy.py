@@ -48,11 +48,20 @@ for i, a in enumerate(avals):
     afrac_dda_vals[i] = afrac_dda
 
 # plot
+mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+mpl.rc('text', usetex=True)
+
 plt.plot(avals, afrac_anl_vals, 'r--', lw=3., label='analytical')
 plt.plot(avals, afrac_dda_vals, 'b--', lw=3., label='dipole shape')
 plt.legend()
 
 ax = plt.gca()
-ax.set_xlabel('a-axis length (mm)')
-ax.set_ylabel('area fraction')
+ax.set_xlabel('a-axis length (mm)', fontsize=32)
+ax.set_ylabel('area fraction', fontsize=32)
+
+ax.tick_params(axis='both', which='major', labelsize=28, pad=20)
+ax.set_xticklabels(ax.get_xticks())
+ax.set_yticklabels(ax.get_yticks())
+ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
+
 plt.savefig('afrac_accuracy.png')
