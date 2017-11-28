@@ -41,3 +41,5 @@ fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb)
 ```
 
 where ```fname``` is the name of the input file that we just created and ```afrac``` is the estimated area fraction of the crystal. See the examples directory for more information. We can now run the DDA code with this file as an input to calculate the scattering.
+
+![alt text](https://github.com/rskschrom/crystal_dda/blob/master/examples/crystal3.0.png)
