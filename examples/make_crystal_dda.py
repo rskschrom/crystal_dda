@@ -8,22 +8,24 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from crystal_dda.crystal_dda import branched_planar_dda
+from crystal_dda.geometry import afrac_dda_subregion
 
 # set values to create branched planar crystal with
-a = 0.2
+a = 3.
 amax = 3.
-ac = 0.5
+ac = 0.05
 
 fb = 0.4
 ft = 0.2
 fg = 0.7
-fmb = 0.4
 
 nsb = 5
+
 asp = 20.
 ag = amax*fg
+nxp = 300
 
-fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb)
+fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, nsb, nxp)
 print fname, afrac
 
 # plot dipole locations from text file
@@ -36,7 +38,7 @@ z3d = dda_data[:,2]
 zval = z3d[0]
 x2d = x3d[z3d==zval]
 y2d = y3d[z3d==zval]
-plt.scatter(x2d, y2d, c='b', s=1, edgecolor='')
+plt.scatter(x2d, y2d, c='b', s=5, edgecolor='')
 ax = plt.gca()
 ax.set_aspect(1.)
 plt.savefig('dipole_locations.png')

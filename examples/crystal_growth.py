@@ -3,7 +3,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import crystal_dda.polygons as poly
-from crystal_dda.crystal_dda import rotate, in_polygon
+from geom.crystal_dda import rotate, in_polygon
 from matplotlib import path
 import os
 
@@ -13,11 +13,17 @@ ac = 0.5
 fg = 0.7
 ft = 0.2
 fb = 0.4
-fmb = 0.4
-nsb = 5
+nsb = 11
 
 ag = fg*amax
 wt = ft*amax/2.
+
+# determine main branch fraction width (give same width as sub-branches, or 1)
+wt = ft/2.*amax
+wsb = 1./((nsb-1)/fb+1.)*(amax-ac-wt)
+wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
+fmb = wmb/(ac/2.)
+print fmb, wmb, wsb
 
 # test points
 numxp = 300
@@ -52,7 +58,7 @@ xp_br = xp[inbranched]
 yp_br = yp[inbranched]
 
 # get crystal shapes at various sizes
-numa = 25
+numa = 11
 avals = np.linspace(ac, amax, numa)
 
 for a in avals:

@@ -6,29 +6,12 @@ Robert Schrom @ 11/2017
 import numpy as np
 import matplotlib as mpl
 mpl.use('Agg')
-from matplotlib import path
 from polygons import make_hexagon, make_branched_planar
 import geometry as geom
 import os
 
-# rotate x and y points
-def rotate(x, y, angle):
-    ang_rad = angle/180.*np.pi
-    xrot = x*np.cos(ang_rad)-y*np.sin(ang_rad)
-    yrot = x*np.sin(ang_rad)+y*np.cos(ang_rad)
-    return xrot, yrot
-
-# function to take polygon and points and return indicator
-def in_polygon(xpoly, ypoly, xpoints, ypoints):
-    p = path.Path([(xpoly[i], ypoly[i]) for i in range(len(xpoly))])
-    points = np.empty([len(xpoints), 2])
-    points[:,0] = xpoints
-    points[:,1] = ypoints
-    indicator = p.contains_points(points)
-    return indicator
-
 # create branched planar crystal
-def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb, numxp):
+def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, nsb, numxp):
     # test points
     numyp = numxp
     x2d, y2d = np.meshgrid(np.linspace(-a, a, numxp),
@@ -38,13 +21,21 @@ def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb, numxp):
 
     # make hexagon first
     xhex, yhex = make_hexagon(a)
-    inhex = in_polygon(xhex, yhex, xp, yp)
+    inhex = geom.in_polygon(xhex, yhex, xp, yp)
     xp_hex = xp[inhex]
     yp_hex = yp[inhex]
 
+    # determine main branch fraction width (give same width as sub-branches, or 1)
+    wt = ft/2.*amax
+    #wsb = fb/(nsb-1)*(amax-ac-wt)
+    wsb = 1./((nsb-1)/fb+1.)*(amax-ac-wt)
+    wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
+    fmb = wmb/(ac/2.)
+    print fmb
+
     # determine which hexagon points are in branched planar
     xbr, ybr = make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
-    inbranched = in_polygon(xbr, ybr, xp_hex, yp_hex)
+    inbranched = geom.in_polygon(xbr, ybr, xp_hex, yp_hex)
     xp_br = xp_hex[inbranched]
     yp_br = yp_hex[inbranched]
 
