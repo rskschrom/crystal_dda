@@ -11,9 +11,33 @@ python setup.py install --user
 Numpy and Matplotlib are required dependencies.
 
 # Usage
-Set the variables in ``make_crystal_dda.py`` appropriately and then run with:
+
+The main function to create a branched planar dda file is ```branched_planar_dda``` which we import with:
 
 ```
-python make_crystal_dda.py
+from crystal_dda import branched_planar_dda
 ```
-The name of the file you just generated will be printed out as well as the area fraction of the crystal. Then you can run the DDA code with this file as an input.
+
+Next, we set the values defining the branched planar crystal shape appropriately. For example:
+
+```
+a = 0.2
+amax = 3.
+ac = 0.5
+
+fb = 0.4
+ft = 0.2
+fg = 0.7
+fmb = 0.4
+
+nsb = 5
+asp = 20.
+ag = amax*fg
+```
+Finaly, we create the DDA input file with:
+
+```
+fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, fmb, nsb)
+```
+
+where ```fname``` is the name of the input file that we just created and ```afrac``` is the estimated area fraction of the crystal. We can now run the DDA code with this file as an input to calculate the scattering.
