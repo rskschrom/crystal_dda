@@ -2,5 +2,5 @@
 build
 dist
 *~
-*.txt
-crystal*.png
+examples/*.txt
+examples/crystal*.png
