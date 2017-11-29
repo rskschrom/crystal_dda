@@ -67,6 +67,21 @@ def afrac_branched(a, amax, ac, ag, ft, fb, fmb, nsb):
     afrac = np.sum(afrac_dep[0:na-1]*darea[0:na-1])/(np.sqrt(3.)/4.*a**3.)
     return afrac
 
+# formulation like microphysics code
+def afrac_branched_alt(a, amax, ac, ag, ft, fb, fmb, nsb):
+            if (a.lt.ac) then
+               RhoDep = 917.
+            endif
+            if (a.ge.ac.and.a.lt.ag) then
+               RhoDep = 917.*fb+917.*fmb*2.*(1.-fb)/(a/ac+1.)
+            endif
+            if (acur.ge.ag) then
+               print *, ag/acur, amax/a
+               RhoDep = fb/(amax-ag)*ag*(amax/a-1.)
+               RhoDep = 917.*fb/(amax-ag)*(ft*amax*(1.-ag/a)+ag*(amax/a-1.))+917.*fmb*2.*(1.-fb)/(a/ac+1.)
+               RhoDep = 917.*fb
+            endif
+
 # calculate area fraction in hexagonal region within dda polygon using random points
 def afrac_dda_subregion(xhex, yhex, xdda_poly, ydda_poly):
     # probability method for estimating area fraction
