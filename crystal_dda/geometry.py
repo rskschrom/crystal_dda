@@ -63,8 +63,8 @@ def afrac_branched(a, amax, ac, ag, ft, fb, fmb, nsb):
                            ag*(amax/a2branch-1.))+fmb*2.*(1.-fb)/(a2branch/ac+1.)
 
     # calculate true area fraction
-    darea = np.sqrt(3.)/4*(avals[1:]**2.-avals[0:-1]**2.)
-    afrac = np.sum(afrac_dep[0:na-1]*darea[0:na-1])/(np.sqrt(3.)/4.*a**2.)
+    darea = np.sqrt(3.)/4*(avals[1:]**3.-avals[0:-1]**3.)
+    afrac = np.sum(afrac_dep[0:na-1]*darea[0:na-1])/(np.sqrt(3.)/4.*a**3.)
     return afrac
 
 # calculate area fraction in hexagonal region within dda polygon using random points
