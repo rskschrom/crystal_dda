@@ -56,10 +56,11 @@ def afrac_branched(a, amax, ac, ag, ft, fb, fmb, nsb):
     # calculate area fraction (deposition)
     afrac_dep = np.ma.masked_all([na])
     a2branch = avals[avals>=ag]
+    a2greg = avals[(avals>=ac)&(avals<ag)]
     afrac_dep[avals<ac] = 1.
-    afrac_dep[(avals>=ac)&(avals<ag)] = fb+fmb*2.*(1.-fb)/(a/ac+1.)
+    afrac_dep[(avals>=ac)&(avals<ag)] = fb+fmb*2.*(1.-fb)/(a2greg/ac+1.)
     afrac_dep[avals>=ag] = fb/(amax-ag)*(ft*amax*(1.-ag/a2branch)+
-                           ag*(amax/a2branch-1.))+fmb*2.*(1.-fb)/(a/ac+1.)
+                           ag*(amax/a2branch-1.))+fmb*2.*(1.-fb)/(a2branch/ac+1.)
 
     # calculate true area fraction
     darea = np.sqrt(3.)/4*(avals[1:]**2.-avals[0:-1]**2.)
