@@ -11,7 +11,7 @@ import geometry as geom
 import os
 
 # create branched planar crystal
-def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, nsb, numxp):
+def branched_planar_dda(a, asp, amax, ac, ft, fb, fg, nsb, numxp):
     # test points
     numyp = numxp
     x2d, y2d = np.meshgrid(np.linspace(-a, a, numxp),
@@ -26,15 +26,10 @@ def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, nsb, numxp):
     yp_hex = yp[inhex]
 
     # determine main branch fraction width (give same width as sub-branches, or 1)
-    wt = ft/2.*amax
-    #wsb = fb/(nsb-1)*(amax-ac-wt)
-    wsb = 1./((nsb-1)/fb+1.)*(amax-ac-wt)
-    wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
-    fmb = wmb/(ac/2.)
-    print fmb
+    fmb = geom.frac_main_branch(amax, ac, ft, fb, nsb)
 
     # determine which hexagon points are in branched planar
-    xbr, ybr = make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
+    xbr, ybr = make_branched_planar(amax, ac, ft, fb, fg, nsb, 0.)
     inbranched = geom.in_polygon(xbr, ybr, xp_hex, yp_hex)
     xp_br = xp_hex[inbranched]
     yp_br = yp_hex[inbranched]
@@ -73,6 +68,6 @@ def branched_planar_dda(a, asp, amax, ac, ag, ft, fb, nsb, numxp):
     f.close()
 
     # get analytical area fraction
-    afrac = geom.afrac_branched(a, amax, ac, ag, ft, fb, fmb, nsb)
+    afrac = geom.afrac_branched(a, amax, ac, ft, fb, fg, nsb)
     return fname, afrac
 

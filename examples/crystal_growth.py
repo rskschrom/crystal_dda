@@ -13,19 +13,12 @@ ac = 0.05
 
 fb = 0.6
 ft = 0.4
-fg = 0.3
+fg = 0.9
 
 nsb = 11
 
 ag = fg*amax
 wt = ft*amax/2.
-
-# determine main branch fraction width (give same width as sub-branches, or 1)
-wt = ft/2.*amax
-wsb = 1./((nsb-1)/fb+1.)*(amax-ac-wt)
-wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
-fmb = wmb/(ac/2.)
-print fmb, wmb, wsb
 
 # test points
 numxp = 300
@@ -54,13 +47,13 @@ for i in range(4):
     ybound = np.concatenate((ybound, yboundr[1:]))
 
 # create branched planar crystal
-x, y = poly.make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
+x, y = poly.make_branched_planar(amax, ac, ft, fb, fg, nsb, 0.)
 inbranched = geom.in_polygon(x, y, xp, yp)
 xp_br = xp[inbranched]
 yp_br = yp[inbranched]
 
 # get crystal shapes at various sizes
-numa = 11
+numa = 2
 avals = np.linspace(ac, amax, numa)
 
 for a in avals:

@@ -17,28 +17,21 @@ ac = 0.05
 
 fb = 0.6
 ft = 0.4
-fg = 0.3
+fg = 0.9
 
 nsb = 11
 asp = 20.
-ag = amax*fg
 nxp = 300
-
-# determine main branch fraction width (give same width as sub-branches, or 1)
-wt = ft/2.*amax
-wsb = 1./((nsb-1)/fb+1.)*(amax-ac-wt)
-wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
-fmb = wmb/(ac/2.)
 
 # loop over a axis lengths for given crystal
 numa = 21
 avals = np.linspace(ac, amax, numa)
 afrac_anl_vals = np.empty(numa)
 afrac_dda_vals = np.empty(numa)
-xdda, ydda = make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, 0.)
+xdda, ydda = make_branched_planar(amax, ac, ft, fb, fg, nsb, 0.)
 
 for i, a in enumerate(avals):
-    fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, nsb, nxp)
+    fname, afrac = branched_planar_dda(a, asp, amax, ac, ft, fb, fg, nsb, nxp)
 
     # compare area fraction of actual DDA particle
     xhex, yhex = make_hexagon(a)

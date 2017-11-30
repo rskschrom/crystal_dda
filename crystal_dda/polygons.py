@@ -57,7 +57,7 @@ def make_stellar(fbranch, a):
     return xst, yst
 
 # create branched planar crystal
-def make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, diplen):
+def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
     # get x and y coordinates of bounding points
     #----------------------------------------------------
     # p1 - midpoint of ice core edge
@@ -65,6 +65,10 @@ def make_branched_planar(amax, ac, ag, ft, fb, fmb, nsb, diplen):
     # p3 - intersection of main branch and tip
     # p4 - upper corner at amax
     #----------------------------------------------------
+
+    # calculate shape quantities
+    fmb = geom.frac_main_branch(amax, ac, ft, fb, nsb)
+    ag = fg*amax+(1.-fg)*ac
     wmb = 1./2.*fmb*ac
     wt = 1./2.*ft*amax
 

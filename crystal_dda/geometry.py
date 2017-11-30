@@ -47,11 +47,23 @@ def afrac_stellar(fbranch):
     afrac = 1.-(1.-fbranch)**2.
     return afrac
 
+# determine main branch fraction width (give same width as sub-branches, or 1)
+def frac_main_branch(amax, ac, ft, fb, nsb):
+    wt = ft/2.*amax
+    wsb = 1./((nsb-1)/fb+1.)*(amax-ac-wt)
+    wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
+    fmb = wmb/(ac/2.)
+    return fmb
+
 # get area fraction of branched planar
-def afrac_branched(a, amax, ac, ag, ft, fb, fmb, nsb):
+def afrac_branched(a, amax, ac, ft, fb, fg, nsb):
     # set particle sizes (mm)
     na = 500
     avals = np.linspace(0., a, na)
+
+    # calculate ag and fmb
+    fmb = frac_main_branch(amax, ac, ft, fb, nsb)
+    ag = fg*amax+(1.-fg)*ac
 
     # calculate area fraction (deposition)
     afrac_dep = np.ma.masked_all([na])
@@ -63,24 +75,9 @@ def afrac_branched(a, amax, ac, ag, ft, fb, fmb, nsb):
                            ag*(amax/a2branch-1.))+fmb*2.*(1.-fb)/(a2branch/ac+1.)
 
     # calculate true area fraction
-    darea = np.sqrt(3.)/4*(avals[1:]**3.-avals[0:-1]**3.)
-    afrac = np.sum(afrac_dep[0:na-1]*darea[0:na-1])/(np.sqrt(3.)/4.*a**3.)
+    darea = np.sqrt(3.)/4*(avals[1:]**2.-avals[0:-1]**2.)
+    afrac = np.sum(afrac_dep[0:na-1]*darea[0:na-1])/(np.sqrt(3.)/4.*a**2.)
     return afrac
-
-# formulation like microphysics code
-def afrac_branched_alt(a, amax, ac, ag, ft, fb, fmb, nsb):
-            if (a.lt.ac) then
-               RhoDep = 917.
-            endif
-            if (a.ge.ac.and.a.lt.ag) then
-               RhoDep = 917.*fb+917.*fmb*2.*(1.-fb)/(a/ac+1.)
-            endif
-            if (acur.ge.ag) then
-               print *, ag/acur, amax/a
-               RhoDep = fb/(amax-ag)*ag*(amax/a-1.)
-               RhoDep = 917.*fb/(amax-ag)*(ft*amax*(1.-ag/a)+ag*(amax/a-1.))+917.*fmb*2.*(1.-fb)/(a/ac+1.)
-               RhoDep = 917.*fb
-            endif
 
 # calculate area fraction in hexagonal region within dda polygon using random points
 def afrac_dda_subregion(xhex, yhex, xdda_poly, ydda_poly):
