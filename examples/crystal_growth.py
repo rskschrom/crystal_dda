@@ -9,15 +9,15 @@ import os
 
 # set branched planar crystal properties
 amax = 3.
-ac = 0.05
+ac = 0.2
 
 fb = 0.6
 ft = 0.4
-fg = 0.9
+fg = 0.5
 
 nsb = 11
 
-ag = fg*amax
+ag = fg*amax+(1.-fg)*ac
 wt = ft*amax/2.
 
 # test points
@@ -53,7 +53,7 @@ xp_br = xp[inbranched]
 yp_br = yp[inbranched]
 
 # get crystal shapes at various sizes
-numa = 2
+numa = 21
 avals = np.linspace(ac, amax, numa)
 
 for a in avals:
@@ -65,7 +65,7 @@ for a in avals:
     yp_sub = yp_br[inhex]
 
     #plot
-    plt.scatter(xp_sub, yp_sub, c='b', s=2, edgecolor='')
+    plt.scatter(xp_sub, yp_sub, c='b', s=4, edgecolor='')
     plt.plot(xcore, ycore, 'r--', lw=2.)
     plt.plot(xg, yg, 'k--', lw=2.)
     plt.plot(xbound, ybound, 'g--', lw=2.)
@@ -77,5 +77,5 @@ for a in avals:
 
     ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
     imgname = 'crystal{:.1f}.png'.format(a)
-    plt.savefig(imgname, dpi=150)
+    plt.savefig(imgname, dpi=40)
     os.system('convert -trim {} {}'.format(imgname, imgname))
