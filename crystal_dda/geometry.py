@@ -55,28 +55,56 @@ def frac_main_branch(amax, ac, ft, fb, nsb):
     fmb = wmb/(ac/2.)
     return fmb
 
-# get area fraction of branched planar
-def afrac_branched(a, amax, ac, ft, fb, fg, nsb):
-    # set particle sizes (mm)
-    na = 500
-    avals = np.linspace(0., a, na)
+# get areas of each region of branched planar
+def area_bound(a):
+    area = np.sqrt(3.)/4.*a**2.
+    return area
+
+def area_gap(a, fmb, fb, ac):
+    area = np.sqrt(3.)/2.*fmb*(1.-fb)*ac*(a-ac)+\
+           np.sqrt(3.)/4.*fb*(a**2.-ac**2.)
+    return area
+
+def area_star(a, fmb, fb, ft, ac, ag, amax):
+    b = fb/(amax-ag)*(ft*amax-ag)
+    c = (fb*ag*amax*(1.-ft)/(amax-ag))+(1.-fb)*fmb*ac
+    area = np.sqrt(3.)/4.*b*(a**2.-ag**2.)+np.sqrt(3.)/2.*c*(a-ag)
+    return area
+
+# get deposition area fraction of branched planar
+def dep_afrac_branched(a, amax, ac, ft, fb, fg, nsb):
+    # deal with fg = 1
+    fg = min(fg, 0.99999999)
 
     # calculate ag and fmb
     fmb = frac_main_branch(amax, ac, ft, fb, nsb)
     ag = fg*amax+(1.-fg)*ac
 
     # calculate area fraction (deposition)
-    afrac_dep = np.ma.masked_all([na])
-    a2branch = avals[avals>=ag]
-    a2greg = avals[(avals>=ac)&(avals<ag)]
-    afrac_dep[avals<ac] = 1.
-    afrac_dep[(avals>=ac)&(avals<ag)] = fb+fmb*2.*(1.-fb)/(a2greg/ac+1.)
-    afrac_dep[avals>=ag] = fb/(amax-ag)*(ft*amax*(1.-ag/a2branch)+
-                           ag*(amax/a2branch-1.))+fmb*2.*(1.-fb)/(a2branch/ac+1.)
+    if a <= ac:
+        afrac_dep = 1.
+    elif (a>ac)&(a<=ag):
+        afrac_dep = fb+ac/a*fmb*(1.-fb)
+    else:
+        afrac_dep = fb/(amax-ag)*(ft*amax-ag+ag*amax*(1.-ft)/a)+\
+                    (1.-fb)*fmb*ac/a
+    return afrac_dep
 
-    # calculate true area fraction
-    darea = np.sqrt(3.)/4*(avals[1:]**2.-avals[0:-1]**2.)
-    afrac = np.sum(afrac_dep[0:na-1]*darea[0:na-1])/(np.sqrt(3.)/4.*a**2.)
+# get area fraction of branched planar
+def afrac_branched(a, amax, ac, ft, fb, fg, nsb):
+    # deal with fg = 1 and calculate crystal values
+    fg = min(fg, 0.99999999)
+    fmb = frac_main_branch(amax, ac, ft, fb, nsb)
+    ag = fg*amax+(1.-fg)*ac
+    
+    # calculate area fraction
+    if a <= ac:
+        afrac = 1.
+    elif (a>ac)&(a<=ag):
+        afrac = (area_bound(ac)+area_gap(a, fmb, fb, ac))/area_bound(a)
+    else:
+        afrac = (area_bound(ac)+area_gap(ag, fmb, fb, ac)
+                +area_star(a, fmb, fb, ft, ac, ag, amax))/area_bound(a)
     return afrac
 
 # calculate area fraction in hexagonal region within dda polygon using random points
