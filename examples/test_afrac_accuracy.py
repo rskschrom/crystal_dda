@@ -10,14 +10,15 @@ import numpy as np
 from crystal_dda.crystal_dda import branched_planar_dda
 from crystal_dda.polygons import make_branched_planar, make_hexagon
 from crystal_dda.geometry import afrac_dda_subregion
+import os
 
 # set values to create branched planar crystal with
 amax = 3.
-ac = 0.05
+ac = 0.2
 
 fb = 0.6
 ft = 0.4
-fg = 0.9
+fg = 0.5
 
 nsb = 11
 asp = 20.
@@ -58,3 +59,4 @@ ax.set_yticklabels(ax.get_yticks())
 ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
 
 plt.savefig('afrac_accuracy.png')
+os.system('convert -trim {} {}'.format('afrac_accuracy.png', 'afrac_accuracy.png'))

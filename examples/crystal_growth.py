@@ -53,7 +53,7 @@ xp_br = xp[inbranched]
 yp_br = yp[inbranched]
 
 # get crystal shapes at various sizes
-numa = 21
+numa = 2
 avals = np.linspace(ac, amax, numa)
 
 for a in avals:
@@ -74,6 +74,13 @@ for a in avals:
     ax.set_aspect(1.)
     ax.set_xlim([-amax, amax])
     ax.set_ylim([-amax, amax])
+
+    ax.set_xlabel('x distance (mm)')
+    ax.set_ylabel('y distance (mm)')
+
+    ax.tick_params(axis='both', which='major', labelsize=28, pad=20)
+    ax.set_xticklabels(ax.get_xticks())
+    ax.set_yticklabels(ax.get_yticks())
 
     ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
     imgname = 'crystal{:.1f}.png'.format(a)
