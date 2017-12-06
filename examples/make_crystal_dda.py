@@ -21,11 +21,11 @@ fg = 0.7
 
 nsb = 5
 
-asp = 20.
 ag = amax*fg
 nxp = 300
+nzp = 7
 
-fname, afrac = branched_planar_dda(a, asp, amax, ac, ag, ft, fb, nsb, nxp)
+fname, afrac = branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, nxp, nzp)
 print fname, afrac
 
 # plot dipole locations from text file

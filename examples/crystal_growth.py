@@ -53,6 +53,8 @@ xp_br = xp[inbranched]
 yp_br = yp[inbranched]
 
 # get crystal shapes at various sizes
+mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+mpl.rc('text', usetex=True)
 numa = 2
 avals = np.linspace(ac, amax, numa)
 
@@ -65,7 +67,7 @@ for a in avals:
     yp_sub = yp_br[inhex]
 
     #plot
-    plt.scatter(xp_sub, yp_sub, c='b', s=4, edgecolor='')
+    plt.scatter(xp_sub, yp_sub, c='b', s=8, edgecolor='')
     plt.plot(xcore, ycore, 'r--', lw=2.)
     plt.plot(xg, yg, 'k--', lw=2.)
     plt.plot(xbound, ybound, 'g--', lw=2.)
@@ -84,5 +86,5 @@ for a in avals:
 
     ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
     imgname = 'crystal{:.1f}.png'.format(a)
-    plt.savefig(imgname, dpi=40)
+    plt.savefig(imgname, dpi=120)
     os.system('convert -trim {} {}'.format(imgname, imgname))

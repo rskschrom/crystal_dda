@@ -17,29 +17,33 @@ amax = 3.
 ac = 0.2
 
 fb = 0.6
-ft = 0.4
-fg = 0.5
+ft = 0.5
+fg = 0.8
 
 nsb = 11
-asp = 20.
 nxp = 300
+nzp = 5
 
 # loop over a axis lengths for given crystal
 numa = 21
-avals = np.linspace(ac, amax, numa)
+avals = np.linspace(0.1, amax, numa)
 afrac_anl_vals = np.empty(numa)
 afrac_dda_vals = np.empty(numa)
 xdda, ydda = make_branched_planar(amax, ac, ft, fb, fg, nsb, 0.)
 
 for i, a in enumerate(avals):
-    fname, afrac = branched_planar_dda(a, asp, amax, ac, ft, fb, fg, nsb, nxp)
+    fname, afrac = branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, nxp, nzp)
 
     # compare area fraction of actual DDA particle
     xhex, yhex = make_hexagon(a)
     afrac_dda = afrac_dda_subregion(xhex, yhex, xdda, ydda)
-    print 'a:{:.2e}\tanalytical: {:.3f}\tdda: {:.3f}'.format(a, afrac, afrac_dda)
+    print 'a:{:.2e}\tanalytical: {:.3f}, {:.1f}\tdda: {:.3f}'.format(a, afrac, afrac*917., afrac_dda)
     afrac_anl_vals[i] = afrac
     afrac_dda_vals[i] = afrac_dda
+
+# print out results again
+print afrac_dda_vals
+print avals
 
 # plot
 mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
