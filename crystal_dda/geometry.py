@@ -50,7 +50,7 @@ def afrac_stellar(fbranch):
 # determine main branch fraction width (give same width as sub-branches, or 1)
 def frac_main_branch(amax, ac, ft, fb, nsb):
     wt = ft/2.*amax
-    wsb = 1./((nsb-1)/fb+1.)*(amax-ac-wt)
+    wsb = 1./((nsb-1)/fb+1.)*(amax-ac)
     wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
     fmb = wmb/(ac/2.)
     return fmb

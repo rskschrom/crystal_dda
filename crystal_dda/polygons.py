@@ -86,7 +86,7 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
     ycoor = np.array([p1y, p2y, p3y, p4y])
 
     # figure out sub-branches
-    wsb = fb/(nsb-1)*(amax-ac-wt-wmb)
+    wsb = fb/(nsb-1)*(amax-ac-wmb)
     ssb = wsb*(1.-fb)/fb
 
     mbound, bbound = geom.points2eqn(0., np.sqrt(3.)/2.*ag,
@@ -94,8 +94,8 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
 
     for i in range(nsb):
         # points on main branch
-        sb1x = p2x+i*(wsb+ssb)/2.
-        sb1y = p2y+i*(wsb+ssb)*np.sqrt(3.)/2.
+        sb1x = p2x+(i+0.25)*(wsb+ssb)/2.
+        sb1y = p2y+(i+0.25)*(wsb+ssb)*np.sqrt(3.)/2.
         sb4x = sb1x+wsb/2.
         sb4y = sb1y+wsb*np.sqrt(3.)/2.
 

@@ -14,13 +14,13 @@ import os
 
 # set values to create branched planar crystal with
 amax = 3.
-ac = 0.2
+ac = 0.3
 
-fb = 0.6
-ft = 0.5
-fg = 0.8
+fb = 0.5
+ft = 0.3
+fg = 0.2
 
-nsb = 11
+nsb = 5
 nxp = 300
 nzp = 5
 

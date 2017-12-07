@@ -15,7 +15,7 @@ fb = 0.6
 ft = 0.4
 fg = 0.5
 
-nsb = 11
+nsb = 5
 
 ag = fg*amax+(1.-fg)*ac
 wt = ft*amax/2.
@@ -55,7 +55,7 @@ yp_br = yp[inbranched]
 # get crystal shapes at various sizes
 mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 mpl.rc('text', usetex=True)
-numa = 2
+numa = 21
 avals = np.linspace(ac, amax, numa)
 
 for a in avals:
@@ -86,5 +86,5 @@ for a in avals:
 
     ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
     imgname = 'crystal{:.1f}.png'.format(a)
-    plt.savefig(imgname, dpi=120)
+    plt.savefig(imgname, dpi=40)
     os.system('convert -trim {} {}'.format(imgname, imgname))
