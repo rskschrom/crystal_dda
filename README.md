@@ -52,6 +52,8 @@ Finally, we create the DDA input file with:
 fname, afrac = branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, nxp, nzp)
 ```
 
-where ```fname``` is the name of the input file that we just created and ```afrac``` is the analytical area fraction of the crystal. See the examples directory for more information. We can now run the DDA code with this file as an input to calculate the scattering. The gif animation below shows DDA files produced with the ```branched_planar_dda()``` function above for ```a``` sizes of a crystal ranging from ```ac``` to ```amax``` for that crystal.
+where ```fname``` is the name of the input file that we just created and ```afrac``` is the analytical area fraction of the crystal. See the examples directory for more information. We can now run the DDA code with this file as an input to calculate the scattering.
+
+The gif animation below shows DDA files produced with the ```branched_planar_dda()``` function above for ```a``` sizes of a crystal ranging from ```ac``` to ```amax``` for that crystal. The red outline indicates the core hexagon of a-axis length ```ac```, the black outline indicates the inscribing hexagon with a-axis length ```ag```, and the green outline indicates the bounding star shape of the crystal defined by points connecting the center of the main branches to the edge of the crystal tips to the center of each of the edges of the inscribing hexagon.
 
 ![alt text](https://github.com/rskschrom/crystal_dda/blob/master/examples/crystal.gif)
