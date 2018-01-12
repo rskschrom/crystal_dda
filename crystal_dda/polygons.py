@@ -92,7 +92,7 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
     mbound, bbound = geom.points2eqn(0., np.sqrt(3.)/2.*ag,
                                      amax/2.*(1.-ft), np.sqrt(3.)/2.*amax)
 
-    for i in range(nsb):
+    for i in range(nsb-1):
         # points on main branch
         sb1x = p2x+(i+0.25)*(wsb+ssb)/2.
         sb1y = p2y+(i+0.25)*(wsb+ssb)*np.sqrt(3.)/2.

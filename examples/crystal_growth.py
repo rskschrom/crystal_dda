@@ -9,11 +9,11 @@ import os
 
 # set branched planar crystal properties
 amax = 3.
-ac = 0.2
+ac = 0.5
 
 fb = 0.6
 ft = 0.4
-fg = 0.5
+fg = 0.6
 
 nsb = 5
 
@@ -55,10 +55,10 @@ yp_br = yp[inbranched]
 # get crystal shapes at various sizes
 mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 mpl.rc('text', usetex=True)
-numa = 21
+numa = 3
 avals = np.linspace(ac, amax, numa)
 
-for a in avals:
+for i, a in enumerate(avals):
     # subset full-size crystal to a size
     print a
     xhex, yhex = poly.make_hexagon(a)
@@ -67,10 +67,11 @@ for a in avals:
     yp_sub = yp_br[inhex]
 
     #plot
-    plt.scatter(xp_sub, yp_sub, c='b', s=8, edgecolor='')
-    plt.plot(xcore, ycore, 'r--', lw=2.)
-    plt.plot(xg, yg, 'k--', lw=2.)
-    plt.plot(xbound, ybound, 'g--', lw=2.)
+    plt.figure(i)
+    plt.scatter(xp_sub, yp_sub, c='b', s=20, edgecolor='')
+    plt.plot(xcore, ycore, 'r--', lw=4.)
+    plt.plot(xg, yg, 'k--', lw=4.)
+    plt.plot(xbound, ybound, 'g--', lw=4.)
 
     ax = plt.gca()
     ax.set_aspect(1.)
@@ -86,5 +87,5 @@ for a in avals:
 
     ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
     imgname = 'crystal{:.1f}.png'.format(a)
-    plt.savefig(imgname, dpi=40)
+    plt.savefig(imgname, dpi=60)
     os.system('convert -trim {} {}'.format(imgname, imgname))
