@@ -33,6 +33,7 @@ def branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, numxp, numzp):
     inbranched = geom.in_polygon(xbr, ybr, xp_hex, yp_hex)
     xp_br = xp_hex[inbranched]
     yp_br = yp_hex[inbranched]
+    afrac = float(len(xp_br))/float(len(xp_hex))
 
     # rescale to dda domain
     dx = 2.*a/(numxp-1)
@@ -64,7 +65,5 @@ def branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, numxp, numzp):
         f.write(' {:.0f} {:.0f} {:.0f}\n'.format(xdip[i], ydip[i], zdip[i]))
     f.close()
 
-    # get analytical area fraction
-    afrac = geom.afrac_branched(a, amax, ac, ft, fb, fg, nsb)
     return fname, afrac
 
