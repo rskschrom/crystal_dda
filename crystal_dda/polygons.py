@@ -149,3 +149,23 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
 
     print len(xhex)
     return xhex, yhex
+
+# extend 2d polygon shape to 3d
+def make_poly3d(xpol2, ypol2, zthick):
+    num2d = len(xpol2)
+    num3d = 2*num2d+1
+
+    xpol3 = np.empty([num3d])
+    ypol3 = np.empty([num3d])
+    zpol3 = np.empty([num3d])
+    xpol3[0:num2d] = xpol2
+    xpol3[num2d] = xpol3[num2d-1]
+    xpol3[num2d+1:] = xpol2
+    ypol3[0:num2d] = ypol2
+    ypol3[num2d] = ypol3[num2d-1]
+    ypol3[num2d+1:] = ypol2
+    zpol3[0:num2d] = -zthick/2.
+    zpol3[num2d] = zpol3[num2d-1]
+    zpol3[num2d+1:] = zthick/2.
+
+    return xpol3.flatten(), ypol3.flatten(), zpol3.flatten()
