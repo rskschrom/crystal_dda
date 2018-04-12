@@ -86,16 +86,16 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
     ycoor = np.array([p1y, p2y, p3y, p4y])
 
     # figure out sub-branches
-    wsb = fb/(nsb-1)*(amax-ac-wmb)
+    wsb = fb/(nsb)*(amax-ac-wmb)
     ssb = wsb*(1.-fb)/fb
 
     mbound, bbound = geom.points2eqn(0., np.sqrt(3.)/2.*ag,
                                      amax/2.*(1.-ft), np.sqrt(3.)/2.*amax)
 
-    for i in range(nsb-1):
+    for i in range(nsb):
         # points on main branch
-        sb1x = p2x+(i+0.25)*(wsb+ssb)/2.
-        sb1y = p2y+(i+0.25)*(wsb+ssb)*np.sqrt(3.)/2.
+        sb1x = p2x+(i+0.)*(wsb+ssb)/2.
+        sb1y = p2y+(i+0.)*(wsb+ssb)*np.sqrt(3.)/2.
         sb4x = sb1x+wsb/2.
         sb4y = sb1y+wsb*np.sqrt(3.)/2.
 
@@ -149,3 +149,70 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
 
     print len(xhex)
     return xhex, yhex
+
+# take 2d polygon and turn into 3d
+def make_poly3d(x2d, y2d, dz):
+    # divide points into 2 legs
+    nump = len(x2d)
+    mi = nump/2
+    x1 = x2d[0:mi]
+    y1 = y2d[0:mi]
+    x2 = x2d[mi:]
+    y2 = y2d[mi:]
+
+    # get leg1 side polygon
+    num1 = len(x1)
+    numl1 = num1*2+2
+    leg1x = np.empty([numl1])
+    leg1y = np.empty([numl1])
+    leg1z = np.empty([numl1])
+    leg1x[0] = x1[0]
+    leg1x[1:num1+1] = x1
+    leg1x[num1+1] = leg1x[num1]
+    leg1x[num1+2:] = x1[::-1]
+
+    leg1y[0] = y1[0]
+    leg1y[1:num1+1] = y1
+    leg1y[num1+1] = leg1y[num1]
+    leg1y[num1+2:] = y1[::-1]
+
+    leg1z[0] = -dz/2.
+    leg1z[1:num1+1] = dz/2.
+    leg1z[num1+1:] = -dz/2.
+
+    # get leg2 side polygon
+    num2 = len(x2)
+    numl2 = num2*2+2
+    leg2x = np.empty([numl2])
+    leg2y = np.empty([numl2])
+    leg2z = np.empty([numl2])
+    leg2x[0] = x2[0]
+    leg2x[1:num2+1] = x2
+    leg2x[num2+1] = leg2x[num2]
+    leg2x[num2+2:] = x2[::-1]
+
+    leg2y[0] = y2[0]
+    leg2y[1:num2+1] = y2
+    leg2y[num2+1] = leg2y[num2]
+    leg2y[num2+2:] = y2[::-1]
+
+    leg2z[0] = -dz/2.
+    leg2z[1:num2+1] = dz/2.
+    leg2z[num2+1:] = -dz/2.
+
+    # get top side
+    topx = x2d[:]
+    topy = y2d[:]
+    topz = topx-topx+dz/2.
+
+    # get bot side
+    botx = x2d[:]
+    boty = y2d[:]
+    botz = topx-topx-dz/2.
+    
+    leg1 = np.vstack((leg1x, leg1y, leg1z))
+    leg2 = np.vstack((leg2x, leg2y, leg2z))
+    top = np.vstack((topx, topy, topz))
+    bot = np.vstack((botx, boty, botz))
+
+    return leg1, leg2, top, bot
