@@ -7,60 +7,50 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-from crystal_dda.crystal_dda import branched_planar_dda
-from crystal_dda.polygons import make_branched_planar, make_hexagon
-from crystal_dda.geometry import afrac_dda_subregion
+from crystal_dda.geometry import afrac_branched, afrac_dda_subregion
 import os
 
 # set values to create branched planar crystal with
 amax = 3.
 ac = 0.5
 
-fb = 0.6
-ft = 0.4
-fg = 0.6
+fb = 0.4
+ft = 0.3
+fg = 0.5
 
 nsb = 5
 nxp = 300
 nzp = 5
 
 # loop over a axis lengths for given crystal
-numa = 21
+numa = 201
 avals = np.linspace(0.1, amax, numa)
-afrac_anl_vals = np.empty(numa)
-afrac_dda_vals = np.empty(numa)
-xdda, ydda = make_branched_planar(amax, ac, ft, fb, fg, nsb, 0.)
+afrac_new = np.empty([numa])
+afrac_old = np.empty([numa])
 
 for i, a in enumerate(avals):
-    fname, afrac = branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, nxp, nzp)
-
-    # compare area fraction of actual DDA particle
-    xhex, yhex = make_hexagon(a)
-    afrac_dda = afrac_dda_subregion(xhex, yhex, xdda, ydda)
-    print 'a:{:.2e}\tanalytical: {:.3f}, {:.1f}\tdda: {:.3f}'.format(a, afrac, afrac*917., afrac_dda)
-    afrac_anl_vals[i] = afrac
-    afrac_dda_vals[i] = afrac_dda
-
-# print out results again
-print afrac_dda_vals
-print avals
+    afrac_new[i] = afrac_branched(a, amax, ac, ft, fb, fg, nsb)
+    if a > ac:
+        afrac_old[i] = (ac/a)**2.+(1.-(ac/a)**2.)*0.27
+    else:
+        afrac_old[i] = 1.
 
 # plot
 mpl.rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 mpl.rc('text', usetex=True)
 
-plt.plot(avals, afrac_anl_vals, 'r--', lw=3., label='analytical')
-plt.plot(avals, afrac_dda_vals, 'b--', lw=3., label='dipole shape')
-plt.legend()
+plt.plot(avals, afrac_new*917., 'r--', lw=3., label='New effective density')
+plt.plot(avals, afrac_old*917., 'b--', lw=3., label='Old effective density')
+plt.legend(fontsize=26)
 
 ax = plt.gca()
-ax.set_xlabel('a-axis length (mm)', fontsize=32)
-ax.set_ylabel('area fraction', fontsize=32)
+ax.set_xlabel('a-axis length (mm)', fontsize=26)
+ax.set_ylabel('Effective density (kg m$^{\sf{-3}}$)', fontsize=26)
 
-ax.tick_params(axis='both', which='major', labelsize=28, pad=20)
+ax.tick_params(axis='both', which='major', labelsize=24, pad=20)
 ax.set_xticklabels(ax.get_xticks())
 ax.set_yticklabels(ax.get_yticks())
 ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
 
-plt.savefig('afrac_accuracy.png')
-os.system('convert -trim {} {}'.format('afrac_accuracy.png', 'afrac_accuracy.png'))
+plt.savefig('afrac.png')
+os.system('convert -trim {} {}'.format('afrac.png', 'afrac.png'))

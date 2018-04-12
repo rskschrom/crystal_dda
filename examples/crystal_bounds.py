@@ -20,6 +20,9 @@ nsb = 5
 ag = fg*amax+(1.-fg)*ac
 wt = ft*amax/2.
 
+wsb = 1./((nsb-1)/fb+1.)*(amax-ac)
+wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
+
 # test points
 numxp = 300
 numyp = 300
@@ -63,15 +66,42 @@ xp_sub = xp_br[inhex]
 yp_sub = yp_br[inhex]
 
 #plot
-plt.scatter(xp_sub, yp_sub, c='b', s=20, edgecolor='')
+plt.scatter(xp_sub, yp_sub, c='b', s=12, edgecolor='', marker='s')
 plt.plot(xcore, ycore, 'r--', lw=4.)
 plt.plot(xg, yg, 'k--', lw=4.)
 plt.plot(xbound, ybound, 'g--', lw=4.)
 
 ax = plt.gca()
 ax.set_aspect(1.)
-ax.set_xlim([-amax, amax])
-ax.set_ylim([-amax, amax])
+ax.set_xlim([-amax-0.3, amax+0.3])
+ax.set_ylim([-amax-0.3, amax+0.3])
+
+# label text
+ax.text(ac, 0., '$a_c$', color='r', bbox={'edgecolor':'r', 'lw':3.,
+                                          'facecolor':'white', 'alpha':0.7,
+                                           'pad':10}, fontsize=48)
+ax.text(ag, 0., '$a_i$', color='k', bbox={'edgecolor':'k', 'lw':3.,
+                                          'facecolor':'white', 'alpha':0.7,
+                                           'pad':10}, fontsize=48)
+ax.text(amax, 0., '$a_{max}$', color='g', bbox={'edgecolor':'g', 'lw':3.,
+                                          'facecolor':'white', 'alpha':0.7,
+                                           'pad':10}, fontsize=48)
+ax.text(1.2, 2.8, '$w_{t}$', color='m', fontsize=48)
+ax.text(-3.3, 0.3, '$w_{mb}$', color='m', fontsize=48)
+ax.text(-2.2, -1.2, '$w_{sb}$', color='m', fontsize=48)
+
+# plot widths
+plt.plot([a/2., a/2.-wt], [0.1+np.sqrt(3.)*amax/2., 0.1+np.sqrt(3.)*amax/2.], 'm-', lw=5.)
+plt.plot([a/2., a/2.], [0.1+np.sqrt(3.)*amax/2., 0.05+np.sqrt(3.)*amax/2.], 'm-', lw=5.)
+plt.plot([a/2.-wt, a/2.-wt], [0.1+np.sqrt(3.)*amax/2., 0.05+np.sqrt(3.)*amax/2.], 'm-', lw=5.)
+
+plt.plot([-3.1, -3.1], [-wmb/2., wmb/2.], 'm-', lw=5.)
+plt.plot([-3.1, -3.05], [-wmb/2., -wmb/2.], 'm-', lw=5.)
+plt.plot([-3.1, -3.05], [wmb/2., wmb/2.], 'm-', lw=5.)
+
+plt.plot([-1.7, -1.7], [-1.07-wsb/2., -1.07+wsb/2.], 'm-', lw=5.)
+plt.plot([-1.7, -1.65], [-1.07-wsb/2., -1.07-wsb/2.], 'm-', lw=5.)
+plt.plot([-1.7, -1.65], [-1.07+wsb/2., -1.07+wsb/2.], 'm-', lw=5.)
 
 ax.set_xlabel('x distance (mm)')
 ax.set_ylabel('y distance (mm)')
@@ -81,5 +111,7 @@ ax.set_xticklabels(ax.get_xticks())
 ax.set_yticklabels(ax.get_yticks())
 
 ax.grid(color='k', linestyle=(0.5, [2,6]), linewidth=1.)
-imgname = 'crystal_bounds.png'.format(a)
+imgname = 'crystal_bounds.pdf'
 plt.savefig(imgname, dpi=50)
+
+#os.system('convert -trim {} {}'.format(imgname, imgname))

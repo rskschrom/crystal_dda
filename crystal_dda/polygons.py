@@ -86,16 +86,16 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
     ycoor = np.array([p1y, p2y, p3y, p4y])
 
     # figure out sub-branches
-    wsb = fb/(nsb-1)*(amax-ac-wmb)
+    wsb = fb/(nsb)*(amax-ac-wmb)
     ssb = wsb*(1.-fb)/fb
 
     mbound, bbound = geom.points2eqn(0., np.sqrt(3.)/2.*ag,
                                      amax/2.*(1.-ft), np.sqrt(3.)/2.*amax)
 
-    for i in range(nsb-1):
+    for i in range(nsb):
         # points on main branch
-        sb1x = p2x+(i+0.25)*(wsb+ssb)/2.
-        sb1y = p2y+(i+0.25)*(wsb+ssb)*np.sqrt(3.)/2.
+        sb1x = p2x+(i+0.)*(wsb+ssb)/2.
+        sb1y = p2y+(i+0.)*(wsb+ssb)*np.sqrt(3.)/2.
         sb4x = sb1x+wsb/2.
         sb4y = sb1y+wsb*np.sqrt(3.)/2.
 
@@ -149,23 +149,3 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
 
     print len(xhex)
     return xhex, yhex
-
-# extend 2d polygon shape to 3d
-def make_poly3d(xpol2, ypol2, zthick):
-    num2d = len(xpol2)
-    num3d = 2*num2d+1
-
-    xpol3 = np.empty([num3d])
-    ypol3 = np.empty([num3d])
-    zpol3 = np.empty([num3d])
-    xpol3[0:num2d] = xpol2
-    xpol3[num2d] = xpol3[num2d-1]
-    xpol3[num2d+1:] = xpol2
-    ypol3[0:num2d] = ypol2
-    ypol3[num2d] = ypol3[num2d-1]
-    ypol3[num2d+1:] = ypol2
-    zpol3[0:num2d] = -zthick/2.
-    zpol3[num2d] = zpol3[num2d-1]
-    zpol3[num2d+1:] = zthick/2.
-
-    return xpol3.flatten(), ypol3.flatten(), zpol3.flatten()

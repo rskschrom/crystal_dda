@@ -67,8 +67,13 @@ def branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, numxp, numzp):
 
     return fname, afrac
 
+<<<<<<< HEAD
 # get dipole locations of branched planar crystal
 def branched_planar_dipoles(a, amax, ac, ft, fb, fg, nsb, numxp, numzp):
+=======
+# get area fraction of real branched planar crystal
+def branched_planar_afrac(a, amax, ac, ft, fb, fg, nsb, numxp, numzp):
+>>>>>>> ae48e71adaf45f7b84d7b67107776acca26b050b
     # test points
     numyp = numxp
     x2d, y2d = np.meshgrid(np.linspace(-a, a, numxp),
@@ -92,9 +97,39 @@ def branched_planar_dipoles(a, amax, ac, ft, fb, fg, nsb, numxp, numzp):
     yp_br = yp_hex[inbranched]
     afrac = float(len(xp_br))/float(len(xp_hex))
 
+<<<<<<< HEAD
     # get z points
     dx = 2.*a/(numxp-1)
     z1d = np.linspace(-0.5*numzp*dx, 0.5*numzp*dx, numzp)
+=======
+    return afrac
+
+# create branched planar crystal
+def branched_planar_dipoles(a, amax, ac, ft, fb, fg, nsb, numxp, numzp):
+    # test points
+    numyp = numxp
+    x2d, y2d = np.meshgrid(np.linspace(-a, a, numxp),
+                           np.linspace(-a, a, numyp), indexing='ij')
+    xp = x2d.flatten()
+    yp = y2d.flatten()
+
+    # make hexagon first
+    xhex, yhex = make_hexagon(a)
+    inhex = geom.in_polygon(xhex, yhex, xp, yp)
+    xp_hex = xp[inhex]
+    yp_hex = yp[inhex]
+
+    # determine main branch fraction width (give same width as sub-branches, or 1)
+    fmb = geom.frac_main_branch(amax, ac, ft, fb, nsb)
+
+    # determine which hexagon points are in branched planar
+    xbr, ybr = make_branched_planar(amax, ac, ft, fb, fg, nsb, 0.)
+    inbranched = geom.in_polygon(xbr, ybr, xp_hex, yp_hex)
+    xp_br = xp_hex[inbranched]
+    yp_br = yp_hex[inbranched]
+    thick = 2.*a*float(numzp)/float(numxp)
+    z1d = np.linspace(0., thick, numzp)
+>>>>>>> ae48e71adaf45f7b84d7b67107776acca26b050b
 
     # add z dimension 
     x3, z3 = np.meshgrid(xp_br, z1d, indexing='ij')
