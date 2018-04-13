@@ -67,9 +67,16 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
     #----------------------------------------------------
 
     # calculate shape quantities
-    fmb = geom.frac_main_branch(amax, ac, ft, fb, nsb)
+    #fmb = geom.frac_main_branch(amax, ac, ft, fb, nsb)
+
+    # figure out sub-branches
+    #wsb = 1./((nsb)/fb+1.)*(amax-ac)
+    wsb = fb*(amax-ac)/nsb
+    ssb = wsb*(1.-fb)/fb
+
     ag = fg*amax+(1.-fg)*ac
-    wmb = 1./2.*fmb*ac
+    #wmb = 1./2.*fmb*ac
+    wmb = min(max(wsb/np.sqrt(3.), ac/2.), min(wsb/np.sqrt(3.), ac/2.))
     wt = 1./2.*ft*amax
 
     p1x = 0.
@@ -85,17 +92,13 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
     xcoor = np.array([p1x, p2x, p3x, p4x])
     ycoor = np.array([p1y, p2y, p3y, p4y])
 
-    # figure out sub-branches
-    wsb = fb/(nsb)*(amax-ac-wmb)
-    ssb = wsb*(1.-fb)/fb
-
     mbound, bbound = geom.points2eqn(0., np.sqrt(3.)/2.*ag,
                                      amax/2.*(1.-ft), np.sqrt(3.)/2.*amax)
 
     for i in range(nsb):
         # points on main branch
-        sb1x = p2x+(i+0.)*(wsb+ssb)/2.
-        sb1y = p2y+(i+0.)*(wsb+ssb)*np.sqrt(3.)/2.
+        sb1x = p2x+(i+0.25)*(wsb+ssb)/2.
+        sb1y = p2y+(i+0.25)*(wsb+ssb)*np.sqrt(3.)/2.
         sb4x = sb1x+wsb/2.
         sb4y = sb1y+wsb*np.sqrt(3.)/2.
 

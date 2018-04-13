@@ -11,7 +11,7 @@ import os
 amax = 3.
 ac = 0.5
 
-fb = 0.6
+fb = 0.4
 ft = 0.4
 fg = 0.6
 
@@ -20,8 +20,20 @@ nsb = 5
 ag = fg*amax+(1.-fg)*ac
 wt = ft*amax/2.
 
-wsb = 1./((nsb-1)/fb+1.)*(amax-ac)
-wmb = min(max(wsb/2., ac/2.), min(wsb/2., ac/2.))
+#wsb = 1./((nsb)/fb+1.)*(amax-ac)
+wsb = fb*(amax-ac)/nsb
+wmb = min(max(wsb/np.sqrt(3.), ac/2.), min(wsb/np.sqrt(3.), ac/2.))
+
+# get points on main branches and subbranches
+mb1x = -amax/2.
+mb1y = amax*np.sqrt(3.)/2.
+mb2x = mb1x+wmb
+mb2y = mb1y
+
+sb1x = 0.44
+sb1y = 0.99
+sb2x = sb1x+wsb/2.
+sb2y = sb1y+wsb*np.sqrt(3.)/2.
 
 # test points
 numxp = 300
@@ -86,22 +98,38 @@ ax.text(ag, 0., '$a_i$', color='k', bbox={'edgecolor':'k', 'lw':3.,
 ax.text(amax, 0., '$a_{max}$', color='g', bbox={'edgecolor':'g', 'lw':3.,
                                           'facecolor':'white', 'alpha':0.7,
                                            'pad':10}, fontsize=48)
-ax.text(1.2, 2.8, '$w_{t}$', color='m', fontsize=48)
-ax.text(-3.3, 0.3, '$w_{mb}$', color='m', fontsize=48)
-ax.text(-2.2, -1.2, '$w_{sb}$', color='m', fontsize=48)
+ax.text(1.2, 3.0, '$w_{t}$', color='m', bbox={'edgecolor':'m', 'lw':3.,
+                                          'facecolor':'white', 'alpha':0.7,
+                                           'pad':10}, fontsize=48)
+ax.text(-1.5, 2.95, '$\\frac{w_{mb}}{2}$', color='m', bbox={'edgecolor':'m', 'lw':3.,
+                                          'facecolor':'white', 'alpha':0.7,
+                                           'pad':15}, fontsize=48)
+ax.text(0.35, 1.5, '$w_{sb}$', color='m', bbox={'edgecolor':'m', 'lw':3.,
+                                          'facecolor':'white', 'alpha':0.7,
+                                           'pad':10}, fontsize=48)
 
 # plot widths
-plt.plot([a/2., a/2.-wt], [0.1+np.sqrt(3.)*amax/2., 0.1+np.sqrt(3.)*amax/2.], 'm-', lw=5.)
-plt.plot([a/2., a/2.], [0.1+np.sqrt(3.)*amax/2., 0.05+np.sqrt(3.)*amax/2.], 'm-', lw=5.)
-plt.plot([a/2.-wt, a/2.-wt], [0.1+np.sqrt(3.)*amax/2., 0.05+np.sqrt(3.)*amax/2.], 'm-', lw=5.)
+plt.plot([a/2., a/2.-wt], [0.1+np.sqrt(3.)*amax/2., 0.1+np.sqrt(3.)*amax/2.], 'm-', lw=4.)
+plt.plot([a/2., a/2.], [0.1+np.sqrt(3.)*amax/2., 0.05+np.sqrt(3.)*amax/2.], 'm-', lw=4.)
+plt.plot([a/2.-wt, a/2.-wt], [0.1+np.sqrt(3.)*amax/2., 0.05+np.sqrt(3.)*amax/2.], 'm-', lw=4.)
 
-plt.plot([-3.1, -3.1], [-wmb/2., wmb/2.], 'm-', lw=5.)
-plt.plot([-3.1, -3.05], [-wmb/2., -wmb/2.], 'm-', lw=5.)
-plt.plot([-3.1, -3.05], [wmb/2., wmb/2.], 'm-', lw=5.)
+doffs = 0.1
+indlen = 0.05
+mb1y = mb1y+doffs
+mb2y = mb2y+doffs
+plt.plot([mb1x, mb2x], [mb1y, mb2y], 'm-', lw=4.)
+plt.plot([mb1x, mb1x], [mb1y, mb1y-indlen], 'm-', lw=4.)
+plt.plot([mb2x, mb2x], [mb2y, mb2y-indlen], 'm-', lw=4.)
 
-plt.plot([-1.7, -1.7], [-1.07-wsb/2., -1.07+wsb/2.], 'm-', lw=5.)
-plt.plot([-1.7, -1.65], [-1.07-wsb/2., -1.07-wsb/2.], 'm-', lw=5.)
-plt.plot([-1.7, -1.65], [-1.07+wsb/2., -1.07+wsb/2.], 'm-', lw=5.)
+doffs = 0.05
+indlen = 0.05
+sb1x = sb1x-doffs/2.
+sb2x = sb2x-doffs/2.
+sb1y = sb1y+doffs*np.sqrt(3.)/2.
+sb2y = sb2y+doffs*np.sqrt(3.)/2.
+plt.plot([sb1x, sb2x], [sb1y, sb2y], 'm-', lw=4.)
+plt.plot([sb1x, sb1x+indlen/2.], [sb1y, sb1y-indlen*np.sqrt(3.)/2.], 'm-', lw=4.)
+plt.plot([sb2x, sb2x+indlen/2.], [sb2y, sb2y-indlen*np.sqrt(3.)/2.], 'm-', lw=4.)
 
 ax.set_xlabel('x distance (mm)')
 ax.set_ylabel('y distance (mm)')
