@@ -60,7 +60,7 @@ avals = np.linspace(ac, amax, numa)
 
 for i, a in enumerate(avals):
     # subset full-size crystal to a size
-    print a
+    print(a)
     xhex, yhex = poly.make_hexagon(a)
     inhex = geom.in_polygon(xhex, yhex, xp_br, yp_br)
     xp_sub = xp_br[inhex]

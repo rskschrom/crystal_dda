@@ -39,7 +39,6 @@ def get_neighbors(xbr, ybr, diplen):
     for i in range(numdip):
         dist = np.sqrt((xbr-xbr[i])**2.+(ybr-ybr[i])**2.)
         numneighbors[i] = len(dist[dist<=1.5*diplen])-1
-        #print numneighbors[i]
 
     return numneighbors
 
@@ -49,7 +48,7 @@ def swap_dda_close(xbr, ybr, xfree, yfree, swapfrac, diplen):
     numdip = len(xbr)
     numneigh = 15
     numneighbors = get_neighbors(xbr, ybr, diplen*2.)
-    print np.max(numneighbors), np.median(numneighbors)
+    print(np.max(numneighbors), np.median(numneighbors))
 
     closeind = np.arange(numdip)[numneighbors>=numneigh]
     numclose = len(closeind)
@@ -101,7 +100,7 @@ xp = x2d.flatten()
 yp = y2d.flatten()
 indicator = np.empty([numxp*numyp])
 diplen = float((np.max(xp)-np.min(xp))/numxp)
-print diplen
+print(diplen)
 
 # create bounding polygons for two regions
 xcore, ycore = poly.make_hexagon(ac)
@@ -150,11 +149,11 @@ sfrac = float(numdip-numswap)/float(numdip)
 
 for i in range(numiter):
     # shuffle dipoles around after initial plot
-    print '{:d}/{:d}'.format(i+1, numiter)
+    print('{:d}/{:d}'.format(i+1, numiter))
     if i>0:
         swfrac = 0.3*(float(i)/float(numiter))**(1.)-0.3*(float(i)/float(numiter))**(3.)
         xp_br, yp_br, xp_free, yp_free, nn = swap_dda_close(xp_br, yp_br, xp_free, yp_free, swfrac, diplen)
-        print len(xp_br), numdip
+        print(len(xp_br), numdip)
 
     # plot
     plt.figure(i)
@@ -186,4 +185,4 @@ for i in range(numiter):
 
     # decrease number of swaps
     #numswap = int(numswap*sfrac)
-    print numswap, sfrac
+    print(numswap, sfrac)

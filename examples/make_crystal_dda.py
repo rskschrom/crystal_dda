@@ -26,7 +26,7 @@ nxp = 300
 nzp = 7
 
 fname, afrac = branched_planar_dda(a, amax, ac, ft, fb, fg, nsb, nxp, nzp)
-print fname, afrac
+print(fname, afrac)
 
 # plot dipole locations from text file
 dda_data = np.genfromtxt(fname, skip_header=3)
