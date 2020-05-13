@@ -4,7 +4,7 @@ Code to generate 2D polygons of various shapes.
 Robert Schrom @ 11/2017
 '''
 import numpy as np
-import geometry as geom
+from . import geometry as geom
 
 # polygon shape of hexagon
 def make_hexagon(a):
@@ -150,5 +150,4 @@ def make_branched_planar(amax, ac, ft, fb, fg, nsb, diplen):
         xhex = np.concatenate((xhex, xrot[1:]))
         yhex = np.concatenate((yhex, yrot[1:]))
 
-    print len(xhex)
     return xhex, yhex
