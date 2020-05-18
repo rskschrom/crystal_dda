@@ -4,10 +4,8 @@ Create DDA input file for branched planar crystal.
 Robert Schrom @ 11/2017
 '''
 import numpy as np
-import matplotlib as mpl
-mpl.use('Agg')
-from polygons import make_hexagon, make_branched_planar
-import geometry as geom
+from .polygons import make_hexagon, make_branched_planar
+from . import geometry as geom
 import os
 
 # create branched planar crystal
