@@ -21,7 +21,7 @@ fg = 0.7
 
 nsb = 5
 
-ag = amax*fg
+ag = fg*amax+(1.-fg)*ac
 nxp = 300
 nzp = 7
 
