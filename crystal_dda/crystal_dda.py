@@ -5,8 +5,7 @@ Robert Schrom @ 11/2017
 '''
 import numpy as np
 import matplotlib as mpl
-mpl.use('Agg')
-from . polygons import make_hexagon, make_branched_planar
+from .polygons import make_hexagon, make_branched_planar
 from . import geometry as geom
 import os
 
