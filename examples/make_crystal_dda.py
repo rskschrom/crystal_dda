@@ -38,7 +38,7 @@ z3d = dda_data[:,2]
 zval = z3d[0]
 x2d = x3d[z3d==zval]
 y2d = y3d[z3d==zval]
-plt.scatter(x2d, y2d, c='b', s=5, edgecolor='')
+plt.scatter(x2d, y2d, c='b', s=5)
 ax = plt.gca()
 ax.set_aspect(1.)
 plt.savefig('dipole_locations.png')
