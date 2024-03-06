@@ -4,5 +4,4 @@ dist
 *~
 crystal_dda/__pycache__
 examples/*.txt
-examples/*.png
 tests/__pycache__
