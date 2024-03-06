@@ -2,5 +2,6 @@
 build
 dist
 *~
+crystal_dda/__pycache__
 examples/*.txt
-examples/crystal*.png
+tests/__pycache__
