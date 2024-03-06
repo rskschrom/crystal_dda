@@ -5,4 +5,4 @@ setup(name='crystal-dda', version='0.0.1',
       url='https://github.com/snowwxradar/crystal_dda',
       author='Robert Schrom',
       packages=['crystal_dda'],
-      package_dir={'crystal_dda':'crystal_dda'})
+      package_dir={'crystal_dda':'src'})
