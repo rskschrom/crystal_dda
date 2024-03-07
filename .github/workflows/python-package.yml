@@ -45,4 +45,4 @@ jobs:
         python -m pip wheel .
     - uses: actions/upload-artifact@v3
       with:
-        path: *.whl
+        path: .
