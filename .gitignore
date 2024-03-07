@@ -3,10 +3,5 @@ build
 dist
 *~
 crystal_dda/__pycache__
-docs/_build
-docs/_templates
-docs/crystal_dda.*.rst
-docs/Makefile
-docs/make.bat
 examples/*.txt
 tests/__pycache__
