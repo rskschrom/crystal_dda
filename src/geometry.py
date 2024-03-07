@@ -1,11 +1,4 @@
-'''
-Geometry functions
-
-Robert Schrom @ 11/2017
-'''
 import numpy as np
-import matplotlib as mpl
-mpl.use('Agg')
 from matplotlib import path
 
 # function to take polygon and points and return indicator
