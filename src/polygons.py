@@ -1,5 +1,6 @@
 import numpy as np
 from crystal_dda.polygon_utils import hexagon, stellar, branched_planar
+from crystal_dda.geometry import in_polygon
 
 class Polygon():
     '''
@@ -45,6 +46,23 @@ class Polygon():
             
         dmax = np.sqrt(dmax)
         return dmax
+
+    def within(self, points):
+        '''
+        Return a boolean index list corresponding to whether each point is within the polygon boundary.
+
+        Parameters
+        ----------
+        points : ndarray
+            The (N,2) array of x-y points that are being evaluated.
+
+        Returns
+        -------
+        indicator : ndarray
+            The (N) length array of boolean indices.
+        '''
+        indicator = in_polygon(self.x, self.y, points[:,0], points[:,1])
+        return indicator
         
 class Hexagon(Polygon):
     '''
