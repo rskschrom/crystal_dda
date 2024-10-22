@@ -7,6 +7,7 @@ name = "crystal-dda"
 version = "0.0.1"
 requires-python = ">=3.8"
 authors = [{name = "Robert Schrom", email = "rschrom.science@gmail.com"}]
+dependencies = ["pytest","matplotlib","numpy","scipy","pyvista"]
 
 #[tool.pytest.ini_options]
 #pythonpath = ['.']

@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from crystal_dda.polygons import Polygon, Hexagon
 from crystal_dda.geometry import in_polygon
+from scipy.spatial import Delaunay
+import pyvista as pv
 
 class Crystal:
     '''
@@ -26,7 +28,45 @@ class Crystal:
         self.iy = np.array([])
         self.iz = np.array([])
         self.ndip = 0
-        
+
+    def create_mesh(self):
+        '''
+        Create a simple 3d mesh by triangulating the 2d polygon and extruding the triangulated polygon to 3d.
+
+        Parameter
+        ---------
+        None
+
+        Returns
+        -------
+        mesh : `pyvista.Dataset`
+            The triangulated 3d mesh surface of the crystal.
+        '''
+        # triangulate polygon
+        points = np.vstack((self.poly.x, self.poly.y)).T
+        tri = Delaunay(points)
+
+        # remove faces outside of the original polygon
+        faces = tri.simplices
+        nface = faces.shape[0]
+
+        xfaces = points[faces,0]
+        yfaces = points[faces,1]
+        mid_points = np.vstack((np.mean(xfaces, axis=1),np.mean(yfaces, axis=1))).T
+        ind = self.poly.within(mid_points)
+        faces = faces[ind,:]
+
+        # create 2d surface mesh
+        nface = faces.shape[0]
+        npoint = len(self.poly.x)
+        faces = np.concatenate((np.full([nface,1], 3), faces), axis=1)
+        z = np.full([npoint], self.c)
+        surf = pv.PolyData(np.vstack((points[:,0],points[:,1],z)).T, faces)
+
+        # extrude 2d mesh to 3d by length 0f 2*c
+        mesh = surf.extrude([0., 0., -2.*self.c], capping=True)
+        return mesh        
+
     def create_dipoles(self, dip_len):
         '''
         Fill the crystal with dimensionless dipole indices based on the crystal physical dimensions and the dipole spacing `dip_len`.
